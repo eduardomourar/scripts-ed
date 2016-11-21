@@ -3,7 +3,7 @@
 ' Author    : edmoura
 ' Desc      : Script para acessar o site do Consulado
 ' Date      : 2016-09-28
-' Changed   : 2016-10-03
+' Changed   : 2016-11-21
 '---------------------------------------------------------------------------------------
 ' Copyright (C) 2016
 '---------------------------------------------------------------------------------------
@@ -14,10 +14,10 @@ Option Explicit ' Force explicit variable declaration
 
 Const APP_TITLE = "Automação Consulado"
 Const PATH_DEFAULT = "C:\Users\ADMIN\Desktop\"
-Const INTERVAL = 60 ' Em segundos
 Const USER_CPF = "USER_CPF" 'Substituir por dados reais
 Const USER_NAME = "USER_NAME"
 Const USER_PASS = "USER_PASS"
+Const INTERVAL = 60 ' Em segundos
 Const vbFromUnicode = 128
 Const vbUnicode = 64
 Const ForReading = 1
@@ -205,39 +205,8 @@ Sub Main()
 '
 	sAutent = ""
 	sMsgFinal = False
-
-	REM PostRequest "http://www.consuladoportugalrjservicos.com/public_html/exec", _
-		REM Array("modulo", "acao"), _
-		REM Array("modulo.servicos", "servico900")
 	
-	'modulo=modulo.login&acao=login001&txtcpf=USER_CPF&txtusuario=USER_NAME&txtsenha=USER_PASS
-	'modulo=modulo.servicos&acao=servico997
-	'modulo=modulo.servicos&acao=servico900
-	
-	'Casamentos com pacto antenupcial entre português(a) e estrangeiro (a).
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376535&indexboleto=0
-	
-	'Requerimento Cartão Cidadão Normal
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376520&indexboleto=0
-	
-	'Nacionalidade para menor de 14 anos filho(a) de pai e/ou mãe português(a) sem procuração
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376537&indexboleto=0
-
-	'modulo=modulo.servicos&acao=servico912&idpedido=376520&rbtndia=13%2F10%2F2016
-	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnfaixa=1
-	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnhora=16
-	
-	
-	sAutent = PostRequest(sAutent)
-	WriteLog sAutent
-	PostRequestFull Array("modulo", "acao", "txtcpf", "txtusuario", "txtsenha"), _
-		Array("modulo.login", "login001", USER_CPF, USER_NAME, USER_PASS)
-	
-	Do
-		PostRequestFull Array("modulo", "acao", "opcao", "idpedido", "indexboleto"), _
-			Array("modulo.servicos", "servico902", "", "376520", "0")
-		If sMsgFinal = False Then WScript.Sleep INTERVAL*1000
-	Loop Until sMsgFinal
+	Call FazerAgendamento()
 
     ' Mostra mensagem de finalização
     If sMsgFinal Then
@@ -250,7 +219,7 @@ Sub Main()
     
 End Sub
 
-Sub PostRequestFull(Names, Values)
+Function PostRequestFull(Names, Values)
 '---------------------------------------------------------------------------------------
 ' Procedure : PostRequestFull
 ' Author    : edmoura
@@ -261,12 +230,9 @@ Sub PostRequestFull(Names, Values)
 ' Date      : 2016-09-28
 '---------------------------------------------------------------------------------------
 '
-	Dim i, FormData, Name, Value, sResponse
-    Dim hDoc, hElems, hElem
-	Dim sFile, lFile
+	Dim i, FormData, Name, Value
 
-	'Enumerate form names and its values
-	'and built string representation of the form data
+	'Enumerate form names and its values and built string representation of the form data
 	For i = 0 To UBound(Names)
 		'URL encode source fields
 		Name = URLEncode(Names(i))
@@ -275,50 +241,9 @@ Sub PostRequestFull(Names, Values)
 		FormData = FormData & Name & "=" & Value
 	Next
 
-	'sResponse = PostRequest(FormData)
+	PostRequestFull = PostRequest(FormData)
 	
-	'read in the file
-    lFile = FreeFile
-    sFile = PATH_DEFAULT & "Consulado\Consulado_Data.html"
-    Open sFile For Input As lFile
-    sResponse = Input$(LOF(lFile), lFile)
-	
-	If sAutent <> "" Then
-		sMsgFinal = False
-		Set hDoc = CreateObject("HTMLFile")
-		
-		hDoc.Write sResponse
-		hDoc.Close
-		
-		i = 0
-		sResponse = ""
-		
-		'loop through  tags
-		If FindClass(hDoc, "dtycampo") Then
-			sResponse = "Sem data"
-			WriteLog sResponse
-		Else
-			Set hElems = hDoc.getElementsByName("rbtndia")
-			If Not hElems Is Nothing Then
-				sMsgFinal = True
-				For Each hElem In hElems
-					i = i + 1
-					sResponse = sResponse & hElem.Value & vbCrLf
-					WriteLog "Data " & i & ": " & hElem.Value
-				Next hElem
-				
-				Call FazerAgendamento()
-				SaveFile "data.txt", sResponse
-			End If
-		End If
-    End If
-	
-    Set hDoc = Nothing
-    Set hElems = Nothing
-	
-	'HTTPPost URL, FormData
-	'IEPostStringRequest URL, FormData
-End Sub
+End Function
 
 Function PostRequest(sRequest)
 
@@ -343,13 +268,7 @@ Function PostRequest(sRequest)
         .setRequestHeader "Connection", "keep-alive"
         .setRequestHeader "Content-Length", Len(sRequest)
         .setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-        '.setRequestHeader "Cache-Control", "max-age=0"
-        '.setRequestHeader "Origin", "http://www.consuladoportugalrjservicos.com"
-        '.setRequestHeader "Upgrade-Insecure-Requests", "1"
-        '.setRequestHeader "User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.116 Safari/537.36"
-        '.setRequestHeader "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-        '.setRequestHeader "Accept-Encoding", "gzip, deflate"
-        '.setRequestHeader "Accept-Language", "en-US,en;q=0.8,pt;q=0.6,pt-PT;q=0.4"
+		
         If bCookie Then .setRequestHeader "Cookie", sAutent
 		
 		On Error Resume Next
@@ -378,132 +297,35 @@ Sub FazerAgendamento()
     
     Dim sResponse
 	
-    sResponse = PostRequest("modulo=modulo.servicos&acao=servico914&agendardia=20%2F10%2F2016&idpedido=376520&rbtnhora=19")
+	'modulo=modulo.login&acao=login001&txtcpf=USER_CPF&txtusuario=USER_NAME&txtsenha=USER_PASS
+	'modulo=modulo.servicos&acao=servico997
+	'modulo=modulo.servicos&acao=servico900
+	
+	'Casamentos com pacto antenupcial entre português(a) e estrangeiro (a).
+	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376535&indexboleto=0
+	
+	'Requerimento Cartão Cidadão Normal
+	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376520&indexboleto=0
+	
+	'Nacionalidade para menor de 14 anos filho(a) de pai e/ou mãe português(a) sem procuração
+	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376537&indexboleto=0
+
+	'modulo=modulo.servicos&acao=servico912&idpedido=376520&rbtndia=13%2F10%2F2016
+	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnfaixa=1
+	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnhora=16
+	
+	sAutent = PostRequest(sAutent)
+	WriteLog sAutent
+	sResponse = PostRequestFull(Array("modulo", "acao", "txtcpf", "txtusuario", "txtsenha"), _
+		Array("modulo.login", "login001", USER_CPF, USER_NAME, USER_PASS))
+		
+	'Tabela de equivalência do campo rbtnhora
+	'rbtnhora	1		2		3		4		5		6		7		8		9		10		11		12		13		14		15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31		32		33
+	'Horário	08:00	08:15	08:30	08:45	09:00	09:15	09:30	09:45	10:00	10:15	10:30	10:45	11:00	11:15	11:30	11:45	12:00	12:15	12:30	12:45	13:00	13:15	13:30	13:45	14:00	14:15	14:30	14:45	15:00	15:15	15:30	15:45	16:00
+	
+	sResponse = PostRequestFull(Array("modulo", "acao", "agendardia", "idpedido", "rbtnhora"), _
+		Array("modulo.servicos", "servico914", "30/11/2016", "376520", "22"))
 
     SaveFile "response" & TimeStamp() & ".html", sResponse
 
-End Sub
-
-Sub HTTPPost(sUrl, sRequest)
-	
-	On Error Resume Next
-
-	Dim oHTTP, oHTML, oElement
-	Set oHTML = CreateObject("HTMLFile")
-	Set oHTTP = CreateObject("MSXML2.ServerXMLHTTP")
-	With oHTTP
-		.open "POST", sUrl, false
-		If Err.Number <> 0 Then
-			WriteLog "Error " & Err.Number & "(0x" & hex(Err.Number) & ") " & Err.Description & "| Source " & Err.Source
-			Err.Clear
-			sMsgFinal = False
-			Exit Sub
-		End If
-		.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-		.setRequestHeader "Content-Length", Len(sRequest)
-		.send sRequest
-		If Err.Number <> 0 Then
-			WriteLog "Error " & Err.Number & "(0x" & hex(Err.Number) & ") " & Err.Description & "| Source " & Err.Source
-			Err.Clear
-			sMsgFinal = False
-			Exit Sub
-		End If
-		oHTML.Write .responseText
-		oHTML.Close
-		'oHTML.body.innerHTML = .responseText
-	End With
-	
-	Set oElement = FindClass(oHTML, "dtycampo")
-	
-	sMsgFinal = True
-	If Not oElement Is Nothing Then
-		If oElement.innerText = "No momento nenhuma data disponível" Then
-			sMsgFinal = False
-			WriteLog "Sem data"
-		End If
-	End If
-	
-	If sMsgFinal Then
-		WriteLog oHTML.body.innerText
-		With CreateObject("ADODB.Stream")
-			.Type = adTypeBinary
-			.Open
-			.Write oHTTP.responseBody
-			.SaveToFile PATH_DEFAULT & "Consulado\response.html", 2 ' save file to desktop
-			.Close
-		End With
-	End If
-	
-	Set oHTTP = Nothing
-	Set oHTML = Nothing
-	Set oElement = Nothing
-End Sub
-
-Sub IEPostStringRequest(sUrl, sRequest)
-'---------------------------------------------------------------------------------------
-' Procedure : IEPostStringRequest
-' Author    : edmoura
-' Desc      : Rotina que envia os dados encoded para a URL usando o IE
-' Input     : Link para envio, dados do formulário
-' Output    :
-' Usage     : IEPostStringRequest(url, formData)
-' Date      : 2016-09-28
-'---------------------------------------------------------------------------------------
-'
-	Dim arrContent
-	With CreateObject("InternetExplorer.Application")
-		.Visible = True ' debug only
-		.Navigate "http://www.consuladoportugalrjservicos.com/public_html/" ' navigate to the same domain where the target file located
-		Do While .ReadyState <> 4 Or .Busy
-			wscript.Sleep 10
-		Loop
-
-		With .document.parentWindow
-			.execScript "var xhr = new XMLHttpRequest", "javascript" ' create XHR instance
-			With .xhr
-				.Open "POST", sUrl, false ' open get request
-				.setRequestHeader "Content-Type", "application/x-www-form-urlencoded"
-				.setRequestHeader "Content-Length", Len(sRequest)
-				.send sRequest
-				arrContent = .responseBody ' retrieve binary content
-			End With
-		End With
-		'.Quit
-	End With
-
-	With CreateObject("Adodb.Stream")
-		.Type = adTypeBinary
-		.Open
-		.Write arrContent ' put content to the stream
-		.SaveToFile CreateObject("WScript.Shell").SpecialFolders.Item(&H0) & "\response.txt", 2 ' save file to desktop
-		.Close
-	End With
-End Sub
-
-Sub PostStringRequest(URL, FormData)
-'---------------------------------------------------------------------------------------
-' Procedure : IEPostStringRequest
-' Author    : edmoura
-' Desc      : Rotina que envia os dados encoded para a URL usando o IE
-' Input     : Link para envio, dados do formulário
-' Output    :
-' Usage     : IEPostStringRequest(url, formData)
-' Date      : 2016-09-28
-'---------------------------------------------------------------------------------------
-'
-  'Create InternetExplorer
-  Dim WebBrowser: Set WebBrowser = CreateObject("InternetExplorer.Application")
-  
-  'You can uncoment Next line To see form results As HTML
-  WebBrowser.Visible = True
-  
-  'Send the form data To URL As POST request
-  WebBrowser.Navigate URL, 2 + 4 + 8, , StringToBytes(FormData, "UTF-8"), _
-    "Content-type: application/x-www-form-urlencoded" + Chr(10) + Chr(13)
-
-  Do While WebBrowser.busy
-    'Sleep 100
-    DoEvents
-  Loop
-  'WebBrowser.Quit
 End Sub
