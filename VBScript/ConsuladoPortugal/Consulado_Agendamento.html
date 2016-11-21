@@ -1,0 +1,201 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #ffffff; background-image: url('http://www.consuladoportugalrj.org.br/wp-content/uploads/2014/01/Consulado_Portugal_RJ_SITE_Background_maior4.png'); background-repeat: no-repeat; background-position: top center; background-attachment: fixed; }
+</style>
+<body class="custom-background">
+<table align="center" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+      <td width="100%" align="center"><img  src="gif/Consulado_Portugal_RJ_SITE_Topo.png" /></td>
+  </tr>
+</table>
+</body>
+</html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Untitled Document</title>
+<link href="css/twJNet.css" rel="stylesheet" type="text/css" />
+<script>
+
+function enviar2(tipo) {
+   if (tipo==3) {
+        document.f.acao.value='servico999';
+        document.f.submit();
+    }
+}
+
+function fncagendar(idpedido) {
+    document.f.acao.value='servico902';
+    document.f.idpedido.value=idpedido;
+    self.status='';
+    document.f.submit();
+}
+
+function fncdesmarcar(idpedido) {
+    document.f.acao.value='servico911';
+    document.f.idpedido.value=idpedido;
+    self.status='';
+    document.f.submit();
+}
+
+function fncdeletar(idpedido) {
+    document.f.acao.value='servico901';
+    document.f.idpedido.value=idpedido;
+    self.status='';
+    if (confirm("Confirma cancelar o serviço solicitado")) {
+        document.f.submit();
+    } else {
+        alert("Serviço solicitado não cancelado")
+    }
+}
+
+function exibeMsg()
+{
+var msg='';
+if (msg!="") {
+    alert(msg)
+    }
+}
+
+</script>
+</head>
+
+<body onLoad="exibeMsg()">
+
+
+
+
+
+
+
+
+<form id="f" name="f" method="post" action="exec">
+  <input type="hidden" name="modulo" value="modulo.servicos"/>
+  <input type="hidden" name="acao" value=" "/>
+  <input type=hidden name="opcao"/>
+  <input type="hidden" name="idpedido" value="0"/>
+  <input type="hidden" name="indexboleto" value="0"/>
+  <table width="770" border="0" cellpadding="0" cellspacing="0" align="center" bgcolor="#f6f9f1">
+    <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center" class="titulomenu">SERVI&Ccedil;OS SOLICITADOS </td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="left" class="titulocadastro" bgcolor="#F0F0F0">Nossa agenda de horários é aberta preferencialmente todas às 2ª feiras.
+Para sua maior comodidade compareça com no máximo 15 minutos de antecedência.
+Não efetuar pagamento após o vencimento. O sistema não libera a agenda para boletos pagos fora do vencimento.</td>
+  </tr>
+  <tr>
+    <td><table width="770" border="1" cellpadding="0" cellspacing="0">
+      <tr bgcolor="#C4CABA" align="center">
+	    <td class="tituloGrade" height="33" width="125">Servico</td>
+        <td class="tituloGrade" width="186">Requerente</td>
+        <td class="tituloGrade" width="185">Situacao</td>
+        <td class="tituloGrade" width="65">Consultar</td>
+	    <td class="tituloGrade" width="65">Agendar e Remarcar</td>
+		<td class="tituloGrade" width="65">Cancelar Agendamento</td>
+        <td class="tituloGrade" width="65">Imprimir Boleto</td>
+        <td class="tituloGrade" width="65">Formulario</td>
+      </tr>
+      
+              <tr class="formRow" bgcolor="#F0F0F0">
+              
+                  <td height="42">Requerimento Cartão Cidadão Normal</td>
+		  <td>EDUARDO DE MOURA RODRIGUES</td>
+                  <td>Visita agendada para 11/10/2016 as 11:45</td>
+                  <td align="center"><a href="javascript: document.f.acao.value='servico910';document.f.idpedido.value='376520';self.status='';document.f.submit();" onmouseover="self.status='Consultar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/bot_edt.gif" width=20 border=0></a></td>
+                  
+                  <td align="center"> <a href="#" onclick="fncagendar('376520')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_calendar.gif" width=20 border=0></a></td>
+                  
+                  
+                  <td align="center"> <a href="#" onclick="fncdesmarcar('376520')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_nocalendar.gif" width=20 border=0></a></td>
+                  
+                  
+                             <td align="center">&nbsp;</td>
+                             
+                  
+                    <td align="center">&nbsp;</td>
+                  
+              </tr>
+          
+              <tr class="formRow" bgcolor="#F0F0F0">
+                  
+                  <td height="42">Casamentos com pacto antenupcial entre português(a) e estrangeiro (a).</td>
+		  <td>EDUARDO DE MOURA RODRIGUES</td>
+                  <td>Visita agendada para 13/10/2016 as 12:30</td>
+                  <td align="center"><a href="javascript: document.f.acao.value='servico910';document.f.idpedido.value='376535';self.status='';document.f.submit();" onmouseover="self.status='Consultar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/bot_edt.gif" width=20 border=0></a></td>
+                  
+                  <td align="center"> <a href="#" onclick="fncagendar('376535')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_calendar.gif" width=20 border=0></a></td>
+                  
+                  
+                  <td align="center"> <a href="#" onclick="fncdesmarcar('376535')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_nocalendar.gif" width=20 border=0></a></td>
+                  
+                  
+                             <td align="center">&nbsp;</td>
+                             
+                  
+                    <td align="center"><a href="javascript: document.f.acao.value='servico915';document.f.idpedido.value='376535';self.status='';document.f.submit();" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/img_impressora.gif" width=20 border=0></a></td>
+                  
+              </tr>
+          
+              <tr class="formRow" bgcolor="#F0F0F0">
+              
+                  <td height="42">Nacionalidade para menor de 14 anos filho(a) de pai e/ou mãe português(a) sem procuração</td>
+		  <td>EDUARDO DE MOURA RODRIGUES</td>
+                  <td>Visita agendada para 11/10/2016 as 11:30</td>
+                  <td align="center"><a href="javascript: document.f.acao.value='servico910';document.f.idpedido.value='376537';self.status='';document.f.submit();" onmouseover="self.status='Consultar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/bot_edt.gif" width=20 border=0></a></td>
+                  
+                  <td align="center"> <a href="#" onclick="fncagendar('376537')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_calendar.gif" width=20 border=0></a></td>
+                  
+                  
+                  <td align="center"> <a href="#" onclick="fncdesmarcar('376537')" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/ic_nocalendar.gif" width=20 border=0></a></td>
+                  
+                  
+                             <td align="center">&nbsp;</td>
+                             
+                  
+                    <td align="center"><a href="javascript: document.f.acao.value='servico915';document.f.idpedido.value='376537';self.status='';document.f.submit();" onmouseover="self.status='Editar';return true" onmouseout="self.status='';return true" ><IMG height=14 src="gif/img_impressora.gif" width=20 border=0></a></td>
+                  
+              </tr>
+          
+    </table></td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <td align="center" class="titulomenu">MENSAGENS RECEBIDAS </td>
+  </tr>
+  <tr>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+      <td><table width="770" border="1" cellpadding="0" cellspacing="0" bgcolor="#f6f9f1">
+        <tr bgcolor="#C4CABA" align="center">
+            <td class="tituloGrade" height="33" width="99">Data</td>
+            <td class="tituloGrade" width="350">Mensagem</td>
+            <td class="tituloGrade" width="125">Servico</td>
+            <td class="tituloGrade" width="186">Requerente</td>
+        </tr>
+      
+        </table></td>
+  </tr>
+  <tr>
+    <td><table width="580" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+          <td align="left"><input name="btbRetornar" type="button" class="botaotituloPergunta" id="btbRetornar" onclick="enviar2(3)" value="Retornar" /></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+</form>
+</body>
+</html>
