@@ -1,9 +1,9 @@
 '---------------------------------------------------------------------------------------
-' Name      : Automação Consulado
+' Name      : Acessar Página
 ' Author    : edmoura
-' Desc      : Script para acessar o site do Consulado
+' Desc      : Script para acessar o site
 ' Date      : 2016-09-28
-' Changed   : 2016-11-21
+' Changed   : 2016-12-02
 '---------------------------------------------------------------------------------------
 ' Copyright (C) 2016
 '---------------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ Option Explicit ' Force explicit variable declaration
 
 '*************************************( CONSTANTS )*************************************
 
-Const APP_TITLE = "Automação Consulado"
+Const APP_TITLE = "Acessar Página"
 Const PATH_DEFAULT = "C:\Users\ADMIN\Desktop\"
 Const USER_CPF = "USER_CPF" 'Substituir por dados reais
 Const USER_NAME = "USER_NAME"
