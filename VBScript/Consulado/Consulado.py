@@ -1,7 +1,7 @@
 # ---------------------------------------------------------------------------------------
-# Name      : Automacao Consulado Portugal
+# Name      : Acessar Consulado
 # Author    : edmoura
-# Desc      : Script para acessar o site do Consulado de Portugal
+# Desc      : Script para acessar o site do Consulado
 # Date      : 2016-09-28
 # Changed   : 2016-11-21
 # ---------------------------------------------------------------------------------------
@@ -32,15 +32,17 @@ values = {
 s = requests.Session()
 r = s.post(url, data=values)
 
-# Tabela de equivaldncia do campo rbtnhora
+# Tabela de equivalecia do campo rbtnhora
 # rbtnhora	1		2		3		4		5		6		7		8		9		10		11		12		13		14		15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31		32		33
 # Horario	08:00	08:15	08:30	08:45	09:00	09:15	09:30	09:45	10:00	10:15	10:30	10:45	11:00	11:15	11:30	11:45	12:00	12:15	12:30	12:45	13:00	13:15	13:30	13:45	14:00	14:15	14:30	14:45	15:00	15:15	15:30	15:45	16:00
-	
+
+# Passaporte Normal (com entrega de Cartão de Cidadão)
 # values = {
 #     'modulo': 'modulo.servicos',
-#     'acao': 'servico914',
+#     'acao': 'servico1902',
+#     'idservico': '21',
+#     'idsrv': '30',
 #     'agendardia': '30/11/2016',
-#     'idpedido': '376520',
 #     'rbtnhora': '22'
 # }
 
