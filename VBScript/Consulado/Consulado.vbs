@@ -1,9 +1,9 @@
 '---------------------------------------------------------------------------------------
 ' Name      : Acessar Página
-' Author    : edmoura
+' Author    : eduardmourar
 ' Desc      : Script para acessar o site
 ' Date      : 2016-09-28
-' Changed   : 2016-12-02
+' Changed   : 2016-12-31
 '---------------------------------------------------------------------------------------
 ' Copyright (C) 2016
 '---------------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ Main()
 Function PathExists(sPathFull)
 '---------------------------------------------------------------------------------------
 ' Procedure : PathExists
-' Author    : edmoura
+' Author    : eduardmourar
 ' Desc      : Rotina que confere se existe o caminho especificado
 ' Input     : Caminho do arquivo ou pasta
 ' Output    :
@@ -110,7 +110,7 @@ End Function
 Function URLEncode(Data)
 '---------------------------------------------------------------------------------------
 ' Procedure : URLEncode
-' Author    : edmoura
+' Author    : eduardmourar
 ' Desc      : Função que faz o encoding do texto para enviar 
 ' Input     : Dados do texto
 ' Output    : Dados convertido
@@ -195,7 +195,7 @@ End Function
 Sub Main()
 '---------------------------------------------------------------------------------------
 ' Procedure : Main
-' Author    : edmoura
+' Author    : eduardmourar
 ' Desc      : Rotina principal do programa
 ' Input     :
 ' Output    :
@@ -222,7 +222,7 @@ End Sub
 Function PostRequestFull(Names, Values)
 '---------------------------------------------------------------------------------------
 ' Procedure : PostRequestFull
-' Author    : edmoura
+' Author    : eduardmourar
 ' Desc      : Rotina que envia os campos do formulário através do método POST 
 ' Input     : Link para envio, array com nome dos campos, array com valores
 ' Output    :
@@ -297,23 +297,6 @@ Sub FazerAgendamento()
     
     Dim sResponse
 	
-	'modulo=modulo.login&acao=login001&txtcpf=USER_CPF&txtusuario=USER_NAME&txtsenha=USER_PASS
-	'modulo=modulo.servicos&acao=servico997
-	'modulo=modulo.servicos&acao=servico900
-	
-	'Casamentos com pacto antenupcial entre português(a) e estrangeiro (a).
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376535&indexboleto=0
-	
-	'Requerimento Cartão Cidadão Normal
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376520&indexboleto=0
-	
-	'Nacionalidade para menor de 14 anos filho(a) de pai e/ou mãe português(a) sem procuração
-	'modulo=modulo.servicos&acao=servico902&opcao=&idpedido=376537&indexboleto=0
-
-	'modulo=modulo.servicos&acao=servico912&idpedido=376520&rbtndia=13%2F10%2F2016
-	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnfaixa=1
-	'modulo=modulo.servicos&acao=servico914&agendardia=11%2F10%2F2016&idpedido=376520&rbtnhora=16
-	
 	sAutent = PostRequest(sAutent)
 	WriteLog sAutent
 	sResponse = PostRequestFull(Array("modulo", "acao", "txtcpf", "txtusuario", "txtsenha"), _
@@ -322,9 +305,14 @@ Sub FazerAgendamento()
 	'Tabela de equivalência do campo rbtnhora
 	'rbtnhora	1		2		3		4		5		6		7		8		9		10		11		12		13		14		15		16		17		18		19		20		21		22		23		24		25		26		27		28		29		30		31		32		33
 	'Horário	08:00	08:15	08:30	08:45	09:00	09:15	09:30	09:45	10:00	10:15	10:30	10:45	11:00	11:15	11:30	11:45	12:00	12:15	12:30	12:45	13:00	13:15	13:30	13:45	14:00	14:15	14:30	14:45	15:00	15:15	15:30	15:45	16:00
-	
-	sResponse = PostRequestFull(Array("modulo", "acao", "agendardia", "idpedido", "rbtnhora"), _
-		Array("modulo.servicos", "servico914", "30/11/2016", "376520", "22"))
+
+	' Lista de serviços agendados
+	sResponse = PostRequestFull(Array("modulo", "acao"), _
+		Array("modulo.servicos", "servico900"))
+
+	' Passaporte Normal (com entrega de Cartão de Cidadão)
+	'sResponse = PostRequestFull(Array("modulo", "acao", "idservico", "idsrv", "agendardia", "rbtnhora"), _
+	'	Array("modulo.servicos", "servico1902", "21", "30", "30/11/2016", "22"))
 
     SaveFile "response" & TimeStamp() & ".html", sResponse
 
